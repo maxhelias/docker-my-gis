@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  # Instance Web
+  web:
+    restart: always
+    image: nginx
+    ports:
+      - 80:80
+      - 443:433
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./usr/www/:/var/www/html
+      - ./usr/log/nginx:/var/log/nginx
+    links:
+      - php:php
+
+  # Instance PHP
+  php:
+    restart: always
+    build: ./etc/php
+    volumes:
+      - ./usr/www/:/var/www/html
+      - ./usr/log/php:/var/log/php
+    links:
+      - db:db
+
+  # Instance DB
+  db:
+    restart: always
+    image: postgres:9.4
+    ports:
+      - 5432:5432
+    volumes:
+      - ./usr/log/pgsql:/var/lib/postgresql/data
+    environment:
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_DATABASE=develop
+
+
+  ### Stack Optimisation ###
+  # Instance Redis
+  redis:
+    restart: always
+    image: redis
+    ports:
+      - 6379:6379
+
+  # Instance RabbitMQ
+  rabbitmq:
+    restart: always
+    image: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+
+  ### ELK Stack ###
+  # Instance ElasticSearch
+  elasticsearch:
+    restart: always
+    image: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+
+  ### Tools for Dev ###
+  # Instance MailDev
+  maildev:
+    restart: always
+    image: djfarrelly/maildev
+    ports:
+      - 1080:80
+
+networks:
+
+volumes:
