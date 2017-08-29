@@ -3,20 +3,17 @@ version: '3'
 services:
   # Instance Web
   web:
-    restart: always
-    image: nginx
+    build: ./etc/nginx
     ports:
       - 80:80
       - 443:433
     volumes:
-      - ./etc/nginx/conf.d:/etc/nginx/conf.d
       - ./usr/www/:/var/www/html
       - ./usr/log/nginx:/var/log/nginx
 
   # Instance PHP
   php:
-    restart: always
-    image: php:5.6.31-fpm
+    build: ./etc/php
     ports:
       - 9000:9000
     volumes:
@@ -25,27 +22,24 @@ services:
 
   # Instance DB
   db:
-    restart: always
     image: mdillon/postgis
     ports:
       - 5432:5432
     volumes:
       - ./usr/log/pgsql:/var/log/postgresql
     environment:
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD=postgres
 
 
   ### Stack Optimisation ###
   # Instance Redis
   redis:
-    restart: always
     image: redis
     ports:
       - 6379:6379
 
   # Instance RabbitMQ
   rabbitmq:
-    restart: always
     image: rabbitmq
     ports:
       - 5672:5672
@@ -55,7 +49,6 @@ services:
   ### ELK Stack ###
   # Instance ElasticSearch
   elasticsearch:
-    restart: always
     image: elasticsearch
     ports:
       - 9200:9200
@@ -65,7 +58,12 @@ services:
   ### Tools for Dev ###
   # Instance MailDev
   maildev:
-    restart: always
     image: djfarrelly/maildev
     ports:
       - 1080:80
+
+  # Instance Blackfire
+  blackfire:
+    image: blackfire/blackfire
+    ports:
+      - 8707:8707
