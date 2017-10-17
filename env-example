@@ -1,0 +1,84 @@
+############################
+# General Setup
+############################
+
+### Application Path
+# Point to your application code, will be available at `/var/www`.
+
+APPLICATION=~/www/
+
+### Data Path:
+# For all storage systems.
+
+DATA_SAVE_PATH=/.dockermygis/data
+
+### PHP version
+# Applies to the Workspace and PHP-FPM containers (Does not apply to HHVM)
+# Accepted values: 56
+
+PHP_VERSION=56
+
+### PHP interpreter
+# Accepted values: php-fpm
+
+PHP_INTERPRETER=php-fpm
+
+############################
+# Containers Customization
+############################
+
+### WORKSPACE ##########################################################################################################
+
+WORKSPACE_INSTALL_XDEBUG=false
+WORKSPACE_PUID=1000
+WORKSPACE_PGID=1000
+WORKSPACE_TIMEZONE=UTC
+WORKSPACE_SSH_PORT=2222
+
+### PHP ################################################################################################################
+
+PHP_INSTALL_XDEBUG=false
+
+### NGINX ##############################################################################################################
+
+NGINX_HOST_HTTP_PORT=80
+NGINX_HOST_HTTPS_PORT=443
+NGINX_HOST_LOG_PATH=./logs/nginx/
+NGINX_SITES_PATH=./nginx/sites/
+NGINX_PHP_UPSTREAM_CONTAINER=php-fpm
+NGINX_PHP_UPSTREAM_PORT=9000
+
+### POSTGRES ###########################################################################################################
+
+POSTGRES_DB=default
+POSTGRES_USER=default
+POSTGRES_PASSWORD=secret
+POSTGRES_PORT=5432
+
+### DOCKER-SYNC ################################################################################################
+
+# osx: 'native_osx' (default)
+# windows: 'unison'
+# linux: docker-sync not required
+
+DOCKER_SYNC_STRATEGY=native_osx
+
+##### TO BE CONTINUE .................................
+
+############################
+# Miscellaneous
+############################
+
+# Replace with your Docker Host IP (will be appended to /etc/hosts)
+
+DOCKER_HOST_IP=10.0.75.1
+
+
+# The Remote Interpreter entry matching name `laradock`
+
+PHP_IDE_CONFIG=serverName=laradock
+
+
+# Fix for windows users to make sure the application path works.
+
+COMPOSE_CONVERT_WINDOWS_PATHS=1

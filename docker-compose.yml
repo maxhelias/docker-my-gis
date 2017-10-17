@@ -1,69 +1,92 @@
 version: '3'
 
 services:
-  # Instance Web
-  web:
-    build: ./etc/nginx
-    ports:
-      - 80:80
-      - 443:433
+  # Applications Code
+  app:
+    image: tianon/true
     volumes:
-      - ./usr/www/:/var/www/html
-      - ./usr/log/nginx:/var/log/nginx
+      - ${APPLICATION}:/var/www
+
+  # Workspace Utilities
+  workspace:
+    build: 
+      context: ./etc/workspace
+      args:
+        - INSTALL_XDEBUG=${WORKSPACE_INSTALL_XDEBUG}
+        - PUID=${WORKSPACE_PUID}
+        - PGID=${WORKSPACE_PGID}
+        - TZ=${WORKSPACE_TIMEZONE}
+      dockerfile: "Dockerfile-${PHP_VERSION}"
+    volumes_from:
+      - applications
+    extra_hosts:
+      - "dockerhost:${DOCKER_HOST_IP}"
+    ports:
+      - "${WORKSPACE_SSH_PORT}:22"
+    tty: true
+    networks:
+      - frontend
+      - backend
 
   # Instance PHP
   php:
-    build: ./etc/php
-    ports:
-      - 9000:9000
+    build: 
+      context: ./etc/php
+      args:
+        - INSTALL_XDEBUG=${PHP_INSTALL_XDEBUG}
+      dockerfile: "Dockerfile-${PHP_VERSION}"
+    volumes_from:
+      - applications
+    expose:
+        - "9000"
+    depends_on:
+      - workspace
+    extra_hosts:
+      - "dockerhost:${DOCKER_HOST_IP}"
+    environment:
+      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
+    networks:
+      - backend
+
+  # Instance Nginx
+  nginx:
+    build: 
+      context: ./etc/nginx
+      args:
+        - PHP_UPSTREAM_CONTAINER=${NGINX_PHP_UPSTREAM_CONTAINER}
+        - PHP_UPSTREAM_PORT=${NGINX_PHP_UPSTREAM_PORT}
+    volumes_from:
+      - applications
     volumes:
-      - ./usr/www/:/var/www/html
-      - ./usr/log/php:/var/log/php
+      - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+      - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+      - ${NGINX_HOST_HTTPS_PORT}:443
+    depends_on:
+      - php
+    networks:
+      - frontend
+      - backend
 
   # Instance DB
   db:
-    image: mdillon/postgis
-    ports:
-      - 5432:5432
+    build: ./etc/db
     volumes:
-      - ./usr/log/pgsql:/var/log/postgresql
+      - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:5432
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - backend
 
 
-  ### Stack Optimisation ###
-  # Instance Redis
-  redis:
-    image: redis
-    ports:
-      - 6379:6379
-
-  # Instance RabbitMQ
-  rabbitmq:
-    image: rabbitmq
-    ports:
-      - 5672:5672
-      - 15672:15672
-
-
-  ### ELK Stack ###
-  # Instance ElasticSearch
-  elasticsearch:
-    image: elasticsearch
-    ports:
-      - 9200:9200
-      - 9300:9300
-
-
-  ### Tools for Dev ###
-  # Instance MailDev
-  maildev:
-    image: djfarrelly/maildev
-    ports:
-      - 1080:80
-
-  # Instance Blackfire
-  blackfire:
-    image: blackfire/blackfire
-    ports:
-      - 8707:8707
+# Networks Setup
+networks:
+  frontend:
+    driver: "bridge"
+  backend:
+    driver: "bridge"

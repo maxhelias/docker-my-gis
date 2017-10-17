@@ -30,21 +30,40 @@ RUN apt-get update && \
 	docker-php-ext-enable xdebug && \
 	rm -rf /var/lib/apt/lists/*
 
-# Install composer
-RUN curl -s https://getcomposer.org/installer | php \
-    && mv /var/www/html/composer.phar /usr/local/bin/composer
-
 ADD php.ini /usr/local/etc/php/conf.d/
 ADD php-fpm.conf /usr/local/etc/php-fpm-custom.conf
 
-# xDebug
+#####################################
+# xDebug:
+#####################################
+
 ENV HOST_IP = `/sbin/ip route | awk '/default/ { print $3}'`
 ADD xdebug.ini /usr/local/etc/php/conf.d/
-RUN echo "xdebug.remote_host="$HOST_IP >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN echo "xdebug.remote_host="$HOST_IP >> /usr/local/etc/php/conf.d/xdebug.
+
+#####################################
+# Blackfire:
+#####################################
+
+#####################################
+# PHP REDIS EXTENSION FOR PHP 5
+#####################################
+
+#####################################
+# Opcache:
+#####################################
+
+#####################################
+# Image optimizers:
+#####################################
+
+#####################################
+# ImageMagick:
+#####################################
 
 RUN usermod -u 1000 www-data
 
-WORKDIR /var/www/html
+WORKDIR /var/www
 
 CMD ["php-fpm"]
 

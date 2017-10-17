@@ -1,12 +1,18 @@
 sudo: required
 
-language: ruby
+language: bash
 
 services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.16.0
+  - DOCKER_COMPOSE_VERSION=1.16.1
+  matrix:
+    - PHP_VERSION=56 BUILD_SERVICE="app nginx db"
+
+    - PHP_VERSION=56 BUILD_SERVICE="workspace"
+
+    - PHP_VERSION=56 BUILD_SERVICE="php"
 
 before_install:
   - sudo apt-get update
@@ -19,3 +25,4 @@ script:
   - ls -lah
   - docker-compose up -d
   - docker-compose ps
+  - ./travis-build.sh
