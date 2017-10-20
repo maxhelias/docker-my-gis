@@ -4,8 +4,6 @@ TODO
 ----
 
 1. Finir le docker-compose
-	- Finir l'espace Workspace (Dockerfile)
-	- Configurer les log PHP & NGINX & Postgres
 
 	MapServer :
 		- Override l'instance web (nginx) avec la gestion de mapserver

@@ -10,6 +10,7 @@ RUN chmod -R 777 /usr/local/docker
 RUN apt-get update && \
 	apt-get install -y wget \
 		curl \
+		libmemcached-dev \
 		libz-dev \
 		libpq-dev \
 		libjpeg-dev \
@@ -25,10 +26,7 @@ RUN apt-get update && \
 		gd \
 		mcrypt \
 		mbstring \
-		pdo_pgsql && \
-	yes | pecl install xdebug && \
-	docker-php-ext-enable xdebug && \
-	rm -rf /var/lib/apt/lists/*
+		pdo_pgsql
 
 ADD php.ini /usr/local/etc/php/conf.d/
 ADD php-fpm.conf /usr/local/etc/php-fpm-custom.conf
@@ -37,9 +35,16 @@ ADD php-fpm.conf /usr/local/etc/php-fpm-custom.conf
 # xDebug:
 #####################################
 
+ARG INSTALL_XDEBUG=false
+
 ENV HOST_IP = `/sbin/ip route | awk '/default/ { print $3}'`
-ADD xdebug.ini /usr/local/etc/php/conf.d/
-RUN echo "xdebug.remote_host="$HOST_IP >> /usr/local/etc/php/conf.d/xdebug.
+COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN if [ ${INSTALL_XDEBUG} = true ]; then \
+	pecl install xdebug && \
+	docker-php-ext-enable xdebug && \
+	echo "xdebug.remote_host="$HOST_IP >> /usr/local/etc/php/conf.d/xdebug.ini \
+;fi	
 
 #####################################
 # Blackfire:
@@ -60,6 +65,15 @@ RUN echo "xdebug.remote_host="$HOST_IP >> /usr/local/etc/php/conf.d/xdebug.
 #####################################
 # ImageMagick:
 #####################################
+
+#####################################
+# Final:
+#####################################
+
+# Clean up
+USER root
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN usermod -u 1000 www-data
 

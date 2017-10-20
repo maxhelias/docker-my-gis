@@ -6,7 +6,8 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.16.1
+  global:
+    - DOCKER_COMPOSE_VERSION=1.16.1
   matrix:
     - PHP_VERSION=56 BUILD_SERVICE="app nginx db"
 
@@ -22,7 +23,4 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
-  - ls -lah
-  - docker-compose up -d
-  - docker-compose ps
   - ./travis-build.sh
