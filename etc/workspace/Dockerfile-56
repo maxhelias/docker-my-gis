@@ -1,0 +1,165 @@
+FROM phusion/baseimage:latest
+
+MAINTAINER Maxime HELIAS <maximehelias16@gmail.com>
+
+RUN DEBIAN_FRONTEND=noninteractive
+RUN locale-gen en_US.UTF-8
+
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV LC_CTYPE=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV TERM xterm
+
+#####################################
+# Non-Root User:
+#####################################
+
+# Add a non-root user to prevent files being created with root permissions on host machine.
+ARG PUID=1000
+ARG PGID=1000
+
+ENV PUID ${PUID}
+ENV PGID ${PGID}
+
+RUN groupadd -g ${PGID} dockermygis && \
+    useradd -u ${PUID} -g dockermygis -m dockermygis && \
+    apt-get update -yqq
+
+#####################################
+
+# Add content
+COPY . /usr/local/docker
+RUN chmod -R 777 /usr/local/docker
+
+# Add the "PHP 5" ppa
+RUN apt-get install -y software-properties-common && \
+    add-apt-repository -y ppa:ondrej/php
+
+#####################################
+# Software's Installation
+#####################################
+
+# Install "PHP Extentions", "libraries", "Software's"
+RUN apt-get update && \
+    apt-get install -y --allow-downgrades --allow-remove-essential \
+        --allow-change-held-packages \
+        php5.6-cli \
+        php5.6-common \
+        php5.6-curl \
+        php5.6-intl \
+        php5.6-json \
+        php5.6-xml \
+        php5.6-mbstring \
+        php5.6-mcrypt \
+        php5.6-mysql \
+        php5.6-pgsql \
+        php5.6-sqlite \
+        php5.6-sqlite3 \
+        php5.6-zip \
+        php5.6-bcmath \
+        php5.6-memcached \
+        php5.6-gd \
+        php5.6-dev \
+        pkg-config \
+        libcurl4-openssl-dev \
+        libedit-dev \
+        libssl-dev \
+        libxml2-dev \
+        xz-utils \
+        libsqlite3-dev \
+        sqlite3 \
+        git \
+        curl \
+        vim \
+        nano \
+        postgresql-client \
+    && apt-get clean
+
+#####################################
+# Set Timezone
+#####################################
+
+ARG TZ=UTC
+ENV TZ ${TZ}
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+#####################################
+# Composer:
+#####################################
+
+# Install composer and add its bin to the PATH.
+RUN curl -s http://getcomposer.org/installer | php && \
+    echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
+    mv composer.phar /usr/local/bin/composer
+
+# Add the composer.json
+COPY ./composer.json /home/dockermygis/.composer/composer.json
+
+# Make sure that ~/.composer belongs to dockermygis
+RUN chown -R dockermygis:dockermygis /home/dockermygis/.composer
+USER dockermygis
+
+# Check if global install need to be ran
+ARG COMPOSER_GLOBAL_INSTALL=false
+ENV COMPOSER_GLOBAL_INSTALL ${COMPOSER_GLOBAL_INSTALL}
+
+# run the install
+RUN if [ ${COMPOSER_GLOBAL_INSTALL} = true ]; then \
+    composer global install \
+;fi
+
+# Export composer vendor path
+RUN echo "" >> ~/.bashrc && \
+echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc
+
+#####################################
+# User Aliases
+#####################################
+
+USER dockermygis
+COPY ./aliases.sh /home/dockermygis/aliases.sh
+RUN echo "" >> ~/.bashrc && \
+    echo "# Load Custom Aliases" >> ~/.bashrc && \
+    echo "source /home/dockermygis/aliases.sh" >> ~/.bashrc && \
+	echo "" >> ~/.bashrc && \
+	sed -i 's/\r//' /home/dockermygis/aliases.sh && \
+	sed -i 's/^#! \/bin\/sh/#! \/bin\/bash/' /home/dockermygis/aliases.sh
+
+USER root
+RUN echo "" >> ~/.bashrc && \
+    echo "# Load Custom Aliases" >> ~/.bashrc && \
+    echo "source /home/dockermygis/aliases.sh" >> ~/.bashrc && \
+	echo "" >> ~/.bashrc && \
+	sed -i 's/\r//' /home/dockermygis/aliases.sh && \
+	sed -i 's/^#! \/bin\/sh/#! \/bin\/bash/' /home/dockermygis/aliases.sh
+
+#####################################
+# xDebug:
+#####################################
+
+ARG INSTALL_XDEBUG=false
+ENV INSTALL_XDEBUG ${INSTALL_XDEBUG}
+
+# Load the xdebug extension only with phpunit commands
+RUN if [ ${INSTALL_XDEBUG} = true ]; then \
+    apt-get install -y --force-yes php5.6-xdebug && \
+    sed -i 's/^;//g' /etc/php/5.6/cli/conf.d/20-xdebug.ini && \
+    echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/vendor/bin/phpunit'" >> ~/.bashrc \
+;fi
+
+# ADD for REMOTE debugging
+COPY ./xdebug.ini /etc/php/5.6/cli/conf.d/xdebug.ini
+
+#####################################
+# Final:
+#####################################
+
+# Clean up
+USER root
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Set default work directory
+WORKDIR /var/www
+

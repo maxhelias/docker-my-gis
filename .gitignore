@@ -1,1 +1,14 @@
-usr/log/*
+.idea
+/data
+.env
+/.project
+.docker-sync
+
+# GEO
+usr/geo/mapcache/*
+
+# LOG
+usr/log/mapserver/*
+usr/log/nginx/*
+usr/log/pgsql/*
+usr/log/php/*
