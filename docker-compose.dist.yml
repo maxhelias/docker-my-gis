@@ -1,14 +1,3 @@
-  # Instance MapServer
-  mapserver:
-    build: ./etc/mapserver
-    ports:
-      - 8080:8080
-    volumes:
-      - ./usr/geo/mapserver:/usr/local/share/mapserver
-      - ./usr/geo/mapcache:/usr/local/share/mapcache
-      - ./usr/log/mapserver:/var/log/mapserver
-    tty: true
-
 
   ### Stack Optimisation ###
   # Instance Redis

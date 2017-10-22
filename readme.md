@@ -6,9 +6,8 @@ TODO
 1. Finir le docker-compose
 
 MapServer :
-	- Override l'instance web (nginx) avec la gestion de mapserver
-	- Ou si Mapserver sera dans l'instance web ou dans une autre séparé
-	- Et ajouter l'extention php_mapscript au container PHP (5.6 puis travailler sur l'évolution en 7 quand la compatibilité mapscript sera ok)
+	- Configurer les logs Mapserver dans le container "mapserver"
+	- Ajouter l'extention php_mapscript au container PHP
 
 Amélioration (docker-compose.dist.yml) :
 	- Augmenter la Stack Optimisation (Ex : Varnish)

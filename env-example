@@ -58,7 +58,13 @@ POSTGRES_PASSWORD=secret
 POSTGRES_PORT=5432
 POSTGRES_LOG_PATH=./usr/log/pgsql/
 
-### DOCKER-SYNC ################################################################################################
+### MAPSERVER ##########################################################################################################
+
+MAPSERVER_HOST_HTTP_PORT=8080
+MAPSERVER_DATA=./usr/geo/mapserver
+MAPSERVER_LOG_PATH=./usr/log/mapserver
+
+### DOCKER-SYNC ########################################################################################################
 
 # osx: 'native_osx' (default)
 # windows: 'unison'

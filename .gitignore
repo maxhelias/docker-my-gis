@@ -1,12 +1,14 @@
 .idea
 /data
-# .env
+.env
 /.project
 .docker-sync
 
 # GEO
 usr/geo/mapcache/*
-usr/geo/mapserver/*
+usr/geo/mapserver/fonts/*
+usr/geo/mapserver/shapefiles/*
+usr/geo/mapserver/symbols/*
 
 # LOG
 usr/log/mapserver/*

@@ -66,6 +66,8 @@ services:
     ports:
       - ${NGINX_HOST_HTTP_PORT}:80
       - ${NGINX_HOST_HTTPS_PORT}:443
+    links:
+      - mapserver
     depends_on:
       - php
     networks:
@@ -84,6 +86,19 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - backend
+
+  # Instance MapServer
+  mapserver:
+    build: ./etc/mapserver
+    volumes_from:
+      - app
+    volumes:
+      - ${MAPSERVER_DATA}:/usr/local/share/mapserver
+      - ${MAPSERVER_LOG_PATH}:/var/log/mapserver
+    ports:
+      - ${MAPSERVER_HOST_HTTP_PORT}:8080
     networks:
       - backend
 

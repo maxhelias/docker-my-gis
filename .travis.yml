@@ -1,7 +1,5 @@
-sudo: required
-
 language: bash
-
+sudo: required
 services:
   - docker
 
@@ -22,5 +20,4 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
-script:
-  - ./travis-build.sh
+script: ./travis-build.sh
