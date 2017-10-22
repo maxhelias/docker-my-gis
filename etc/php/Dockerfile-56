@@ -17,7 +17,8 @@ RUN apt-get update && \
 		libpng12-dev \
 		libfreetype6-dev \
 		libssl-dev \
-		libmcrypt-dev && \
+		libmcrypt-dev \
+		php5-mapscript && \
 	docker-php-ext-configure gd \
 		--enable-gd-native-ttf \
 		--with-jpeg-dir=/usr/include/ \
@@ -30,6 +31,10 @@ RUN apt-get update && \
 
 ADD php.ini /usr/local/etc/php/conf.d/
 ADD php-fpm.conf /usr/local/etc/php-fpm-custom.conf
+
+# Add PHP MapScript
+RUN cp /usr/lib/php5/20131226/php_mapscript.so /usr/local/lib/php/extensions/no-debug-non-zts-20131226/php_mapscript.so
+RUN docker-php-ext-enable php_mapscript
 
 #####################################
 # xDebug:

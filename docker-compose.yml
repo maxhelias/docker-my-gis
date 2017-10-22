@@ -98,7 +98,7 @@ services:
       - ${MAPSERVER_DATA}:/usr/local/share/mapserver
       - ${MAPSERVER_LOG_PATH}:/var/log/mapserver
     ports:
-      - ${MAPSERVER_HOST_HTTP_PORT}:8080
+      - 8080:8080
     networks:
       - backend
 

@@ -6,7 +6,7 @@ exec /usr/bin/spawn-fcgi \
 	-n \
 	-d /usr/local/share/mapserver \
 	-a $FCGI_LISTEN_ADDRESS \
-	-p $FCGI_LISTEN_PORT \
+	-p 8080 \
 	-F $FCGI_NPROC \
 	-b $FCGI_BACKLOG \
 	-u $FCGI_UID \

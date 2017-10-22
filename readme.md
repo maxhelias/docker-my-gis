@@ -1,17 +1,60 @@
-NOT FINISH -- IN PROGRESS
+# A Docker for your WebGIS application [![Build Status](https://travis-ci.org/maxhelias/docker-my-gis.svg?branch=master)](https://travis-ci.org/maxhelias/docker-my-gis)
 
-TODO
-----
+This repository allows the creation of a Docker environment that meets WebGIS requirements.
 
-1. Finir le docker-compose
+## Architecture
+* `app`
+* `workspace`
+* `php` use PHP-FPM 5.6
+* `nginx`
+* `postgis`
+* `mapserver` 6.4.1
 
-MapServer :
-	- Configurer les logs Mapserver dans le container "mapserver"
-	- Ajouter l'extention php_mapscript au container PHP
+_All containers are in the **./etc/** folder_
 
-Amélioration (docker-compose.dist.yml) :
-	- Augmenter la Stack Optimisation (Ex : Varnish)
-	- Augmenter la Stack ElasticSearch (Ex : Kibana, Logstash)
-	- Ajouter la vue d'ensemble des containers avec le système proposé par Docker (voir site officiel)
+## Additional Features
+Since this environment is designed for a local usage, it comes with features helping the development workflow.
 
-2. Rédiger le README
+## Installation
+This process assumes that [Docker Engine](https://www.docker.com/docker-engine) and [Docker Compose](https://docs.docker.com/compose/) are installed.
+Otherwise, you should have a look to [Install Docker Engine](https://docs.docker.com/engine/installation/) before proceeding further.
+
+### Clone the repository
+```bash
+$ git clone https://github.com/maxhelias/docker-my-gis.git
+```
+
+### Define the environment variables
+```bash
+$ cp env-example .env
+```
+
+
+### Run your containers
+```bash
+$ docker-compose up -d
+```
+
+_You can specify some container to run by adding their current name to the docker-compose.yml file_
+
+### Open your browser and visit localhost: `http://localhost` or `http://localhost/mapserver/`
+```bash
+That's it! Enjoy :)
+```
+
+You will then be able to access the following sample Mapserver URLs :
+
+* <http://localhost/mapserver/?map=example1-1.map&layers=all&mode=map>
+* <http://localhost/mapserver/?map=example1-2.map&layers=all&mode=map>
+* <http://localhost/mapserver/?map=example1-3.map&layers=all&mode=map>
+* <http://localhost/mapserver/?map=example1-4.map&layers=all&mode=map>
+* <http://localhost/mapserver/?map=example1-5.map&layers=all&mode=map>
+* <http://localhost/mapserver/?map=example1-6.map&layers=all&mode=map>
+* <http://localhost/mapserver/?map=example1-7.map&layers=all&mode=map>
+
+## By default
+
+* The application folder mounted on the workspace instance is **./usr/www/**. It can be defined in the configuration file with the variable **APPLICATION**
+* The sites available folder mounted on the Nginx instance is **./etc/nginx/sites/**. It can be defined in the configuration file with the variable **NGINX_SITES_PATH**
+* The data folder mounted on the MapServer instance is **./usr/geo/mapserver/**. It can be defined in the configuration file with the variable **MAPSERVER_DATA**
+* Also, you can define any variable in the configuration file to adapt it to your needs

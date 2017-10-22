@@ -6,9 +6,6 @@
 
 # GEO
 usr/geo/mapcache/*
-usr/geo/mapserver/fonts/*
-usr/geo/mapserver/shapefiles/*
-usr/geo/mapserver/symbols/*
 
 # LOG
 usr/log/mapserver/*

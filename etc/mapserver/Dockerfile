@@ -21,7 +21,6 @@ VOLUME ["/usr/local/share/mapserver"]
 
 # User-configurable parameters
 ENV FCGI_LISTEN_ADDRESS=0.0.0.0 \
-	FCGI_LISTEN_PORT=8080 \
 	FCGI_NPROC=1 \
 	FCGI_BACKLOG=1024 \
 	FCGI_UID=mapserver \

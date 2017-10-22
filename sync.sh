@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This shell script is an optional tool to simplify
-# the installation and usage of laradock with docker-sync.
+# the installation and usage of dockermygis with docker-sync.
 
 # Make sure that the DOCKER_SYNC_STRATEGY is set in the .env
 # DOCKER_SYNC_STRATEGY=native_osx # osx

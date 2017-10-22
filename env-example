@@ -60,7 +60,6 @@ POSTGRES_LOG_PATH=./usr/log/pgsql/
 
 ### MAPSERVER ##########################################################################################################
 
-MAPSERVER_HOST_HTTP_PORT=8080
 MAPSERVER_DATA=./usr/geo/mapserver
 MAPSERVER_LOG_PATH=./usr/log/mapserver
 
@@ -83,9 +82,9 @@ DOCKER_SYNC_STRATEGY=native_osx
 DOCKER_HOST_IP=10.0.75.1
 
 
-# The Remote Interpreter entry matching name `laradock`
+# The Remote Interpreter entry matching name `dockermygis`
 
-PHP_IDE_CONFIG=serverName=laradock
+PHP_IDE_CONFIG=serverName=dockermygis
 
 
 # Fix for windows users to make sure the application path works.
