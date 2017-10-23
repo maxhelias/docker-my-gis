@@ -1,4 +1,5 @@
-# A Docker for your WebGIS application [![Build Status](https://travis-ci.org/maxhelias/docker-my-gis.svg?branch=master)](https://travis-ci.org/maxhelias/docker-my-gis)
+# A Docker for your WebGIS application [![Build Status](https://travis-ci.org/maxhelias/docker-my-gis.svg?branch=master)](https://travis-ci.org/maxhelias/docker-my-gis) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/maxhelias/docker-my-gis/blob/master/LICENSE)
+
 
 This repository allows the creation of a Docker environment that meets WebGIS requirements.
 
@@ -9,6 +10,7 @@ This repository allows the creation of a Docker environment that meets WebGIS re
 * `nginx`
 * `postgis`
 * `mapserver` 6.4.1
+* `redis`
 
 _All containers are in the **./etc/** folder_
 
@@ -37,12 +39,16 @@ $ docker-compose up -d
 
 _You can specify some container to run by adding their current name to the docker-compose.yml file_
 
-### Open your browser and visit localhost: `http://localhost` or `http://localhost/mapserver/`
+### Open your browser and visit localhost
+* `http://localhost` for access to your application
+* OR
+* `http://localhost/mapserver/` for access to your MapServer instance
+
 ```bash
 That's it! Enjoy :)
 ```
 
-You will then be able to access the following sample Mapserver URLs :
+You will then be able to access the following sample MapServer URLs :
 
 * <http://localhost/mapserver/?map=example1-1.map&layers=all&mode=map>
 * <http://localhost/mapserver/?map=example1-2.map&layers=all&mode=map>
