@@ -30,6 +30,7 @@ PHP_INTERPRETER=php
 ### WORKSPACE ##########################################################################################################
 
 WORKSPACE_INSTALL_XDEBUG=false
+WORKSPACE_INSTALL_PHPREDIS=false
 WORKSPACE_COMPOSER_GLOBAL_INSTALL=false
 WORKSPACE_PUID=1000
 WORKSPACE_PGID=1000
@@ -39,6 +40,7 @@ WORKSPACE_SSH_PORT=2222
 ### PHP ################################################################################################################
 
 PHP_INSTALL_XDEBUG=false
+PHP_FPM_INSTALL_PHPREDIS=false
 PHP_LOG_PATH=./usr/log/php/
 
 ### NGINX ##############################################################################################################
@@ -62,6 +64,10 @@ POSTGRES_LOG_PATH=./usr/log/pgsql/
 
 MAPSERVER_DATA=./usr/geo/mapserver
 MAPSERVER_LOG_PATH=./usr/log/mapserver
+
+### REDIS ##############################################################################################################
+
+REDIS_PORT=6379
 
 ### DOCKER-SYNC ########################################################################################################
 

@@ -152,6 +152,35 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
 COPY ./xdebug.ini /etc/php/5.6/cli/conf.d/xdebug.ini
 
 #####################################
+# Blackfire:
+#####################################
+
+#####################################
+# PHP REDIS EXTENSION FOR PHP 5.6
+#####################################
+
+ARG INSTALL_PHPREDIS=false
+ENV INSTALL_PHPREDIS ${INSTALL_PHPREDIS}
+
+RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
+    printf "\n" | pecl -q install -o -f redis && \
+    echo "extension=redis.so" >> /etc/php/5.6/mods-available/redis.ini && \
+    phpenmod redis \
+;fi
+
+#####################################
+# Image optimizers:
+#####################################
+
+#####################################
+# Symfony:
+#####################################
+
+#####################################
+# ImageMagick:
+#####################################
+
+#####################################
 # Final:
 #####################################
 
