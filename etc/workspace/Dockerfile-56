@@ -74,13 +74,7 @@ RUN apt-get update && \
         vim \
         nano \
         postgresql-client \
-        php5-mapscript \
     && apt-get clean
-
-
-# Add PHP MapScript
-RUN cp /usr/lib/php5/20131226/php_mapscript.so /usr/local/lib/php/extensions/no-debug-non-zts-20131226/php_mapscript.so
-RUN docker-php-ext-enable php_mapscript
 
 #####################################
 # Set Timezone
