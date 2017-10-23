@@ -1,12 +1,5 @@
 
   ### Stack Optimisation ###
-  # Instance Redis
-  redis:
-    image: redis
-    ports:
-      - 6379:6379
-    tty: true 
-
   # Instance RabbitMQ
   rabbitmq:
     image: rabbitmq

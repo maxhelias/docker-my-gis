@@ -32,6 +32,8 @@ PHP_INTERPRETER=php
 WORKSPACE_INSTALL_XDEBUG=false
 WORKSPACE_INSTALL_PHPREDIS=false
 WORKSPACE_COMPOSER_GLOBAL_INSTALL=false
+WORKSPACE_INSTALL_IMAGE_OPTIMIZERS=false
+WORKSPACE_INSTALL_IMAGEMAGICK=false
 WORKSPACE_PUID=1000
 WORKSPACE_PGID=1000
 WORKSPACE_TIMEZONE=UTC
@@ -40,7 +42,13 @@ WORKSPACE_SSH_PORT=2222
 ### PHP ################################################################################################################
 
 PHP_INSTALL_XDEBUG=false
+PHP_FPM_INSTALL_ZIP_ARCHIVE=false
 PHP_FPM_INSTALL_PHPREDIS=false
+PHP_FPM_INSTALL_OPCACHE=false
+PHP_FPM_INSTALL_TOKENIZER=false
+PHP_FPM_INSTALL_INTL=false
+PHP_FPM_INSTALL_IMAGE_OPTIMIZERS=false
+PHP_FPM_INSTALL_IMAGEMAGICK=false
 PHP_LOG_PATH=./usr/log/php/
 
 ### NGINX ##############################################################################################################

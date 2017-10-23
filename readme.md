@@ -8,7 +8,7 @@ This repository allows the creation of a Docker environment that meets WebGIS re
 * `workspace`
 * `php` use PHP-FPM 5.6
 * `nginx`
-* `postgis`
+* `db` Postgres / PostGIS
 * `mapserver` 6.4.1
 * `redis`
 
@@ -41,7 +41,7 @@ _You can specify some container to run by adding their current name to the docke
 
 ### Open your browser and visit localhost
 * `http://localhost` for access to your application
-* OR
+ OR
 * `http://localhost/mapserver/` for access to your MapServer instance
 
 ```bash
