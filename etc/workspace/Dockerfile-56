@@ -171,14 +171,27 @@ RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
 #####################################
 # Image optimizers:
 #####################################
+USER root
+ARG INSTALL_IMAGE_OPTIMIZERS=false
+ENV INSTALL_IMAGE_OPTIMIZERS ${INSTALL_IMAGE_OPTIMIZERS}
+RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
+    apt-get install -y --force-yes jpegoptim optipng pngquant gifsicle && \
+    if [ ${INSTALL_NODE} = true ]; then \
+        . ~/.bashrc && npm install -g svgo \
+    ;fi\
+;fi
 
-#####################################
-# Symfony:
-#####################################
+USER dockermygis
 
 #####################################
 # ImageMagick:
 #####################################
+USER root
+ARG INSTALL_IMAGEMAGICK=false
+ENV INSTALL_IMAGEMAGICK ${INSTALL_IMAGEMAGICK}
+RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
+    apt-get install -y --force-yes imagemagick php-imagick \
+;fi
 
 #####################################
 # Final:
