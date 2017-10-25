@@ -13,6 +13,8 @@ env:
 
     - PHP_VERSION=56 BUILD_SERVICE=php
 
+    - PHP_VERSION=56 BUILD_SERVICE=maildev
+
 before_install:
   - sudo apt-get update
   - sudo rm /usr/local/bin/docker-compose

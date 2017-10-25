@@ -11,6 +11,7 @@ This repository allows the creation of a Docker environment that meets WebGIS re
 * `db` Postgres / PostGIS
 * `mapserver` 6.4.1
 * `redis`
+* `maildev`
 
 _All containers are in the **./etc/** folder_
 
