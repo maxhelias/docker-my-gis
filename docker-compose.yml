@@ -122,6 +122,16 @@ services:
     networks:
       - backend
 
+  # Instance MailDev
+  maildev:
+    build: ./etc/maildev
+    ports:
+      - "${MAILDEV_HTTP_PORT}:80"
+      - "${MAILDEV_SMTP_PORT}:25"
+    networks:
+      - frontend
+      - backend
+
 
 # Networks Setup
 networks:

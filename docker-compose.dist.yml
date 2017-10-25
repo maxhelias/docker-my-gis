@@ -18,12 +18,6 @@
 
 
   ### Tools for Dev ###
-  # Instance MailDev
-  maildev:
-    image: djfarrelly/maildev
-    ports:
-      - 1080:80
-
   # Instance Blackfire
   blackfire:
     image: blackfire/blackfire
