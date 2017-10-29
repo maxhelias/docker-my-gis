@@ -16,3 +16,4 @@ xpack.ml.enabled: false
 xpack.graph.enabled: false
 xpack.reporting.enabled: false
 xpack.grokdebugger.enabled: false
+xpack.security.useDefaultEsCredentials: true
