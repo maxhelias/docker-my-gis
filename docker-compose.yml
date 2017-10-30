@@ -122,6 +122,22 @@ services:
     networks:
       - backend
 
+  # Instance RabbitMQ
+  rabbitmq:
+    build: ./etc/rabbitmq
+    ports:
+      - "${RABBITMQ_NODE_HOST_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_HTTP_HOST_PORT}:15672"
+      - "${RABBITMQ_MANAGEMENT_HTTPS_HOST_PORT}:15671"
+    privileged: true
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    depends_on:
+      - php
+    networks:
+      - backend
+
   ### ELK Stask
   # ElasticSearch
   elasticsearch:
