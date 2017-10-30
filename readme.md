@@ -11,6 +11,9 @@ This repository allows the creation of a Docker environment that meets WebGIS re
 * `db` Postgres / PostGIS
 * `mapserver` 6.4.1
 * `redis`
+* `elasticsearch` 5.6.3
+* `kibana` 5.6.3
+* `logstash` 5.6.3
 * `maildev`
 
 _All containers are in the **./etc/** folder_

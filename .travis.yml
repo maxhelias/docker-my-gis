@@ -13,7 +13,7 @@ env:
 
     - PHP_VERSION=56 BUILD_SERVICE=php
 
-    - PHP_VERSION=56 BUILD_SERVICE=maildev
+    - PHP_VERSION=56 BUILD_SERVICE="elasticsearch kibana logstash maildev"
 
 before_install:
   - sudo apt-get update

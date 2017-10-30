@@ -26,7 +26,7 @@ services:
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
     ports:
-      - "${WORKSPACE_SSH_PORT}:22"
+      - ${WORKSPACE_SSH_PORT}:22
     tty: true
     networks:
       - frontend
@@ -118,16 +118,65 @@ services:
     volumes:
       - ${DATA_SAVE_PATH}/redis:/data
     ports:
-      - "${REDIS_PORT}:6379"
+      - ${REDIS_PORT}:6379
     networks:
       - backend
 
+  ### ELK Stask
+  # ElasticSearch
+  elasticsearch:
+    build: ./etc/elasticsearch
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-plugins:/usr/share/elasticsearch/plugins
+    environment:
+      - cluster.name=dockermygis-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    ports:
+      - ${ELASTICSEARCH_HOST_HTTP_PORT}:9200
+      - ${ELASTICSEARCH_HOST_TRANSPORT_PORT}:9300
+    depends_on:
+      - php
+    networks:
+      - frontend
+      - backend
+
+  # Kibana
+  kibana:
+    build: ./etc/kibana
+    ports:
+      - ${KIBANA_HTTP_PORT}:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - frontend
+      - backend
+
+  # LogStash
+  logstash:
+    build: ./etc/logstash
+    volumes:
+      - ${LOGSTASH_PIPELINE}:/usr/share/logstash/pipeline
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    ports:
+      - ${LOGSTASH_HTTP_PORT}:5000
+    depends_on:
+      - elasticsearch
+
+  ### Tool for Dev
   # Instance MailDev
   maildev:
     build: ./etc/maildev
     ports:
-      - "${MAILDEV_HTTP_PORT}:80"
-      - "${MAILDEV_SMTP_PORT}:25"
+      - ${MAILDEV_HTTP_PORT}:80
+      - ${MAILDEV_SMTP_PORT}:25
     networks:
       - frontend
       - backend
@@ -142,7 +191,11 @@ networks:
 
 # Volumes Setup
 volumes:
-  db:
+  postgres:
     driver: "local"
   redis:
+    driver: "local"
+  elasticsearch-data:
+    driver: "local"
+  elasticsearch-plugins:
     driver: "local"
