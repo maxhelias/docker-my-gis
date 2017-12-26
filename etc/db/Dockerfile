@@ -1,4 +1,4 @@
-FROM mdillon/postgis:latest
+FROM mdillon/postgis:9.5-alpine
 
 MAINTAINER Maxime HELIAS <maximehelias16@gmail.com>
 

@@ -10,7 +10,7 @@ This repository allows the creation of a Docker environment that meets WebGIS re
 |     `workspace`     | [phusion/baseimage:latest](https://hub.docker.com/r/phusion/baseimage/)   | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/workspace/Dockerfile-56) |
 |      `php` 5.6      | [php:5.6.31-fpm](https://hub.docker.com/_/php/)                           | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/php/Dockerfile-56)       |
 |       `nginx`       | [nginx:alpine](https://hub.docker.com/_/nginx/)                           | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/nginx/Dockerfile)        |
-|        `db`         | [mdillon/postgis:latest](https://hub.docker.com/r/mdillon/postgis/)       | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/db/Dockerfile)           |
+|      `db` 9.5       | [mdillon/postgis:9.5-alpine](https://hub.docker.com/r/mdillon/postgis/)   | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/db/Dockerfile)           |
 |  `mapserver` 6.4.1  | [debian:jessie](https://hub.docker.com/_/debian/)                         | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/mapserver/Dockerfile)    |
 |       `redis`       | [redis:latest](https://hub.docker.com/_/redis/)                           | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/redis/Dockerfile)        |
 |     `rabbitmq`      | [rabbitmq](https://hub.docker.com/_/rabbitmq/)                            | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/rabbitmq/Dockerfile)     |
