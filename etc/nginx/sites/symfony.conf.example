@@ -3,7 +3,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name docker.local;
+    server_name symfony.local;
     root /var/www/symfony/web;
     index index.php index.html;
 
@@ -20,6 +20,7 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_read_timeout 600;
         fastcgi_param HTTPS off;
     }
 
