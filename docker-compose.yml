@@ -146,7 +146,7 @@ services:
       - backend
 
   ### ELK Stask
-  # ElasticSearch
+  # Instance ElasticSearch
   elasticsearch:
     build: ./etc/elasticsearch
     volumes:
@@ -170,7 +170,7 @@ services:
       - frontend
       - backend
 
-  # Kibana
+  # Instance Kibana
   kibana:
     build: ./etc/kibana
     ports:
@@ -181,7 +181,7 @@ services:
       - frontend
       - backend
 
-  # LogStash
+  # Instance LogStash
   logstash:
     build: ./etc/logstash
     volumes:
@@ -202,6 +202,17 @@ services:
       - ${MAILDEV_SMTP_PORT}:25
     networks:
       - frontend
+      - backend
+
+  # Instance Blackfire
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      - BLACKFIRE_SERVER_ID=${BLACKFIRE_SERVER_ID}
+      - BLACKFIRE_SERVER_TOKEN=${BLACKFIRE_SERVER_TOKEN}
+    depends_on:
+      - php
+    networks:
       - backend
 
 
