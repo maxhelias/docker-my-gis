@@ -13,7 +13,7 @@ env:
 
     - PHP_VERSION=56 BUILD_SERVICE=php
 
-    - PHP_VERSION=56 BUILD_SERVICE="rabbitmq elasticsearch kibana logstash maildev"
+    - PHP_VERSION=56 BUILD_SERVICE="rabbitmq elasticsearch kibana logstash maildev blackfire"
 
 before_install:
   - sudo apt-get update

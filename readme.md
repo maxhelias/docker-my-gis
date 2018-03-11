@@ -18,6 +18,7 @@ This repository allows the creation of a Docker environment that meets WebGIS re
 |   `kibana` 5.6.3    | [kibana:5.6.3](https://www.docker.elastic.co/#kibana-5-6-3)               | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/kibana/Dockerfile)       |
 |  `logstash` 5.6.3   | [logstash:5.6.3](https://www.docker.elastic.co/#logstash-5-6-3)           | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/logstash/Dockerfile)     |
 |      `maildev`      | [djfarrelly/maildev:latest](https://hub.docker.com/r/djfarrelly/maildev/) | [Dockerfile](https://github.com/maxhelias/docker-my-gis/blob/master/etc/maildev/Dockerfile)      |
+|     `blackfire`     | [blackfire/blackfire](https://hub.docker.com/r/blackfire/blackfire/)      | [Dockerfile](https://github.com/blackfireio/docker/blob/master/Dockerfile)				           |
 
 _All containers are in the **./etc/** folder_
 
