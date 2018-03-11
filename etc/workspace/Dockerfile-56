@@ -155,6 +155,20 @@ COPY ./xdebug.ini /etc/php/5.6/cli/conf.d/xdebug.ini
 # Blackfire:
 #####################################
 
+ARG INSTALL_BLACKFIRE=false
+ARG BLACKFIRE_CLIENT_ID
+ARG BLACKFIRE_CLIENT_TOKEN
+
+ENV BLACKFIRE_CLIENT_ID ${BLACKFIRE_CLIENT_ID}
+ENV BLACKFIRE_CLIENT_TOKEN ${BLACKFIRE_CLIENT_TOKEN}
+
+RUN if [ ${INSTALL_XDEBUG} = false -a ${INSTALL_BLACKFIRE} = true ]; then \
+    curl -L https://packagecloud.io/gpg.key | apt-key add - && \
+    echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list && \
+    apt-get update -yqq && \
+    apt-get install blackfire-agent \
+;fi
+
 #####################################
 # PHP REDIS EXTENSION FOR PHP 5.6
 #####################################
@@ -169,16 +183,28 @@ RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
 ;fi
 
 #####################################
+# AMQP:
+#####################################
+
+ARG INSTALL_AMQP=false
+ENV INSTALL_AMQP ${INSTALL_AMQP}
+
+RUN if [ ${INSTALL_AMQP} = true ]; then \
+    apt-get install librabbitmq-dev -y && \
+    pecl install amqp && \
+    echo "extension=amqp.so" >> /etc/php/5.6/mods-available/amqp.ini && \
+    ln -s /etc/php/5.6/mods-available/amqp.ini /etc/php/5.6/cli/conf.d/30-amqp.ini \
+;fi
+
+#####################################
 # Image optimizers:
 #####################################
 USER root
 ARG INSTALL_IMAGE_OPTIMIZERS=false
 ENV INSTALL_IMAGE_OPTIMIZERS ${INSTALL_IMAGE_OPTIMIZERS}
+
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
-    apt-get install -y --force-yes jpegoptim optipng pngquant gifsicle && \
-    if [ ${INSTALL_NODE} = true ]; then \
-        . ~/.bashrc && npm install -g svgo \
-    ;fi\
+    apt-get install -y --force-yes jpegoptim optipng pngquant gifsicle \
 ;fi
 
 USER dockermygis
@@ -189,6 +215,7 @@ USER dockermygis
 USER root
 ARG INSTALL_IMAGEMAGICK=false
 ENV INSTALL_IMAGEMAGICK ${INSTALL_IMAGEMAGICK}
+
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
     apt-get install -y --force-yes imagemagick php-imagick \
 ;fi

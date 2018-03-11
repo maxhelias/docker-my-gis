@@ -31,6 +31,7 @@ PHP_INTERPRETER=php
 
 WORKSPACE_INSTALL_XDEBUG=false
 WORKSPACE_INSTALL_PHPREDIS=false
+WORKSPACE_INSTALL_AMQP=false
 WORKSPACE_COMPOSER_GLOBAL_INSTALL=false
 WORKSPACE_INSTALL_IMAGE_OPTIMIZERS=false
 WORKSPACE_INSTALL_IMAGEMAGICK=false
@@ -44,9 +45,11 @@ WORKSPACE_SSH_PORT=2222
 PHP_INSTALL_XDEBUG=false
 PHP_FPM_INSTALL_ZIP_ARCHIVE=false
 PHP_FPM_INSTALL_PHPREDIS=false
+PHP_FPM_INSTALL_AMQP=false
 PHP_FPM_INSTALL_OPCACHE=false
 PHP_FPM_INSTALL_TOKENIZER=false
 PHP_FPM_INSTALL_INTL=false
+PHP_FPM_INSTALL_GMP=false
 PHP_FPM_INSTALL_IMAGE_OPTIMIZERS=false
 PHP_FPM_INSTALL_IMAGEMAGICK=false
 PHP_LOG_PATH=./usr/log/php/
@@ -103,6 +106,17 @@ LOGSTASH_PIPELINE=./etc/logstash/pipeline
 
 MAILDEV_HTTP_PORT=1080
 MAILDEV_SMTP_PORT=25
+
+### BLACKFIRE ##########################################################################################################
+
+# Create an account on blackfire.io. Don't enable blackfire and xDebug at the same time.
+# visit https://blackfire.io/docs/24-days/06-installation#install-probe-debian for more info.
+
+INSTALL_BLACKFIRE=false
+BLACKFIRE_CLIENT_ID=<client_id>
+BLACKFIRE_CLIENT_TOKEN=<client_token>
+BLACKFIRE_SERVER_ID=<server_id>
+BLACKFIRE_SERVER_TOKEN=<server_token>
 
 ### DOCKER-SYNC ########################################################################################################
 

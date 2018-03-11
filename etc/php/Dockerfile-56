@@ -48,7 +48,7 @@ ENV HOST_IP = `/sbin/ip route | awk '/default/ { print $3}'`
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN if [ ${INSTALL_XDEBUG} = true ]; then \
-	pecl install xdebug && \
+	pecl install xdebug-2.5.5 && \
 	docker-php-ext-enable xdebug && \
 	echo "xdebug.remote_host="$HOST_IP >> /usr/local/etc/php/conf.d/xdebug.ini \
 ;fi	
@@ -57,15 +57,36 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
 # Blackfire:
 #####################################
 
+ARG INSTALL_BLACKFIRE=false
+RUN if [ ${INSTALL_XDEBUG} = false -a ${INSTALL_BLACKFIRE} = true ]; then \
+    version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") && \
+    curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version && \
+    tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp && \
+    mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so && \
+    echo "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" >> /usr/local/etc/php/conf.d/blackfire.ini \
+;fi
+
 #####################################
 # PHP REDIS EXTENSION FOR PHP 5
 #####################################
 
 ARG INSTALL_PHPREDIS=false
 RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
-    pecl install redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis \
+    pecl install redis && \
+    rm -rf /tmp/pear && \
+    docker-php-ext-enable redis \
+;fi
+
+#####################################
+# AMQP:
+#####################################
+
+ARG INSTALL_AMQP=false
+RUN if [ ${INSTALL_AMQP} = true ]; then \
+    apt-get install librabbitmq-dev -y && \
+    # Install the amqp extension
+    pecl install amqp && \
+    docker-php-ext-enable amqp \
 ;fi
 
 #####################################
@@ -109,6 +130,19 @@ RUN if [ ${INSTALL_INTL} = true ]; then \
     apt-get install -y zlib1g-dev libicu-dev g++ && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl \
+;fi
+
+#####################################
+# GMP (GNU Multiple Precision):
+#####################################
+
+ARG INSTALL_GMP=false
+RUN if [ ${INSTALL_GMP} = true ]; then \
+    # Install the GMP extension
+	apt-get update -yqq && \
+	apt-get install -y libgmp-dev && \
+    ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h && \
+    docker-php-ext-install gmp \
 ;fi
 
 #####################################
